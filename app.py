@@ -57,7 +57,7 @@ with gr.Blocks() as demo:
                     with gr.Row():
                         department = gr.Textbox(label="Department")
                     upload_btn = gr.Button("Upload and Process")
-                    preview_output = gr.Markdown(label="Filled Form")
+                    preview_output = gr.File(label="Download Filled Form")
 
 
                     upload_btn.click(
