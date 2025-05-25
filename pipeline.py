@@ -44,7 +44,7 @@ fee_bill_system_prompt = (
     "class FeeBillData(BaseModel):\n"
     "    items: List[FeeItem]\n"
     "    total: float\n"
-    "- Extract only the above given information.\n"
+    "- Extract only the above given information to the best of your ability\n"
     "- If a value is missing, set it to null, \"\", or an empty list as appropriate.\n"
     "- For the items field, provide a list of objects with date, description, and amount.\n"
     "- The total field must be the sum of all amount values in items.\n"
