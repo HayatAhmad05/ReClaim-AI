@@ -7,7 +7,6 @@ import base64
 import json
 from models import ReceiptData, ChildFeeForm
 from form_fill import fill_child_fee_pdf
-from pdf2image import convert_from_path
 
 load_dotenv()
 openai.api_key = os.getenv("OPENAI_API_KEY", "").strip()
@@ -156,3 +155,4 @@ def extract_child_fee_info(img_input, emp_name, emp_code, department):
     except Exception as e:
         print("ERROR:", e)
         return None  # or f"Error: {str(e)}"
+    
