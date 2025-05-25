@@ -1,7 +1,7 @@
 import openai
 from dotenv import load_dotenv
 from io import BytesIO
-import os
+import os, uuid
 from PIL import Image
 import base64
 import json
@@ -137,12 +137,13 @@ def extract_child_fee_info(img_input, emp_name, emp_code, department):
         if items and "bill_month" in items[0]:
             bill_month = items[0]["bill_month"]
 
-        # Use a temp file for output so Gradio can return it
-        import tempfile
-        temp = tempfile.NamedTemporaryFile(delete=False, suffix=".pdf")
+        os.makedirs("outputs", exist_ok=True)
+        output_pdf_path = f"outputs/filled_child_fee_form_{uuid.uuid4().hex}.pdf"
+
+
         filled_pdf_path = fill_child_fee_pdf(
             template_pdf_path="CHILD FEE REIMBURSEMENT FORM.pdf",
-            output_pdf_path=temp.name,
+            output_pdf_path=output_pdf_path,
             emp_name=emp_name,
             emp_code=emp_code,
             department=department,
