@@ -70,7 +70,7 @@ with gr.Blocks() as demo:
     gr.HTML("""
         <style>
         #output-box .prose, #output-box .prose pre, #output-box .prose code {
-            font-size: 30px !important;
+            font-size: 22px !important;
         }
         </style>
     """)
