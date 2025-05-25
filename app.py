@@ -18,6 +18,12 @@ with gr.Blocks() as demo:
                                     "merchant": "",
                                     "date": "",
                                     "total_amount": null,
+                                    "items": [
+                                        {
+                                            "description": "",
+                                            "amount": null
+                                        }
+                                    ]
                                     }
                                     ```""",
 
