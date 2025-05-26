@@ -7,6 +7,7 @@ import base64
 import json
 from models import ReceiptData, ChildFeeForm
 from form_fill import fill_child_fee_pdf
+from fraud import process_receipt
 
 load_dotenv()
 openai.api_key = os.getenv("OPENAI_API_KEY", "").strip()
@@ -20,9 +21,10 @@ reciept_system_prompt = (
     "    description: str\n"
     "    amount: float\n\n"
     "class ReceiptData(BaseModel):\n"
-    "    merchant: str\n"
+    "    fraud_check: Optional[bool] = False  # Optional field for fraud detection, always set to false"
+    "    merchant: str #Only extract the brand name, not the branch name - Only the brand\n"
     "    date: str\n"
-    "    total_amount: float\n"
+    "    total_amount: float\n #Try your hardest to find the accurate total amount\n"
     "    items: Optional[List[ReceiptItem]] = None\n"
     "- Extract only the above given information.\n"
     "- If a value is missing, set it to null, \"\", or an empty list as appropriate.\n"
@@ -54,14 +56,14 @@ fee_bill_system_prompt = (
 
 
 
-def pil_to_bytes(pil_img, quality=60):
+def pil_to_bytes(pil_img, quality=70):
     buf = BytesIO()
     pil_img.save(buf, format='JPEG', quality=quality)
     buf.seek(0)
     return buf
 
 
-def preprocess_image(pil_img, max_size=512):
+def preprocess_image(pil_img, max_size=812):
     return pil_img.resize((max_size, max_size), Image.LANCZOS)
 
 
@@ -95,10 +97,19 @@ def extract_info(pil_img):
             if raw_output.startswith("json"):
                 raw_output = raw_output[4:].strip()
         data = json.loads(raw_output)
-        print(data)
+        # print(data)
         validated = ReceiptData(**data)
-        json_block = json.dumps(validated.dict(), indent=2, ensure_ascii=False)
-        return f"```json\n{json_block}\n```"
+        # json_block = json.dumps(validated.dict(), indent=2, ensure_ascii=False)
+
+        validated_dict = validated.dict()  # This is a Python dict, perfect for fraud check
+        print(validated_dict)
+        result = process_receipt(validated_dict)  # This expects a dict!
+
+
+        result_json = json.dumps(result, indent=2, ensure_ascii=True)  # For display
+        print(result_json)
+        return f"```json\n{result_json}\n```"
+
     except Exception as e:
         return f"```json\n{json.dumps({'error': str(e), 'raw_output': raw_output}, indent=2)}\n```"
 

@@ -6,6 +6,7 @@ class ReceiptItem(BaseModel):
     amount: float
 
 class ReceiptData(BaseModel):
+    fraud_check: Optional[bool] = False  # Optional field for fraud detection
     merchant: str
     date: str  
     total_amount: float
