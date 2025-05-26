@@ -5,8 +5,12 @@ class ReceiptItem(BaseModel):
     description: str
     amount: float
 
+class FraudData(BaseModel):
+    fraud_detected: bool
+    fraud_type: Optional[str] = None  # Type of fraud if detected, e.g., "duplicate", "suspicious"
+
 class ReceiptData(BaseModel):
-    fraud_check: Optional[bool] = False  # Optional field for fraud detection
+    fraud_check: Optional[List[FraudData]] = False  # Optional field for fraud detection
     merchant: str
     date: str  
     total_amount: float

@@ -20,8 +20,11 @@ reciept_system_prompt = (
     "class ReceiptItem(BaseModel):\n"
     "    description: str\n"
     "    amount: float\n\n"
+    "class FraudData(BaseModel):\n"
+    "    fraud_detected: bool \n"
+    "    fraud_type: Optional[str] = None  # Type of fraud if detected, e.g., \"duplicate\", \"suspicious\" \n\n"
     "class ReceiptData(BaseModel):\n"
-    "    fraud_check: Optional[bool] = False  # Optional field for fraud detection, always set to false"
+    "    fraud_check: Optional[List[FraudData]] = []  # Optional field for fraud detection, always set to empty list\n"
     "    merchant: str #Only extract the brand name, not the branch name - Only the brand\n"
     "    date: str\n"
     "    total_amount: float\n #Try your hardest to find the accurate total amount\n"
@@ -29,6 +32,7 @@ reciept_system_prompt = (
     "- Extract only the above given information.\n"
     "- If a value is missing, set it to null, \"\", or an empty list as appropriate.\n"
     "- For the items field, provide a list of objects with description and amount.\n"
+    "- For fraud_check, always set to an empty list [].\n"
     "- Only return a valid JSON object matching the model above.\n"
     "- Do not add any explanation or extra text—only the JSON."
 )
@@ -166,4 +170,3 @@ def extract_child_fee_info(img_input, emp_name, emp_code, department):
     except Exception as e:
         print("ERROR:", e)
         return None  # or f"Error: {str(e)}"
-    

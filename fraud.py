@@ -1,5 +1,6 @@
 import json
 import os
+from models import FraudData
 
 DATA_FILE = 'data.json'
 
@@ -34,7 +35,7 @@ def save_receipts(receipts):
         json.dump(receipts, f, indent=4)
 
 def receipts_are_equal(receipt1, receipt2):
-    """Check if two receipts are the same, comparing only basic fields."""
+    """Check if two receipts are the same, comparing only date and amount."""
     print(f"\n=== COMPARING RECEIPTS ===")
     print(f"Receipt1 merchant: {receipt1.get('merchant')}")
     print(f"Receipt2 merchant: {receipt2.get('merchant')}")
@@ -44,21 +45,14 @@ def receipts_are_equal(receipt1, receipt2):
         print("One or both receipts are empty")
         return False
     
-    # Check basic fields with special handling for merchant
-    merchant1 = receipt1.get('merchant', '').lower()
-    merchant2 = receipt2.get('merchant', '').lower()
+    # Only compare date and amount
     date1 = receipt1.get('date')
     date2 = receipt2.get('date')
     amount1 = receipt1.get('total_amount')
     amount2 = receipt2.get('total_amount')
     
-    print(f"Comparing merchant (lowercase): '{merchant1}' vs '{merchant2}'")
     print(f"Comparing date: '{date1}' vs '{date2}'")
     print(f"Comparing total_amount: '{amount1}' vs '{amount2}'")
-    
-    if merchant1 != merchant2:
-        print("Merchant field doesn't match")
-        return False
     
     if date1 != date2:
         print("Date field doesn't match")
@@ -68,7 +62,7 @@ def receipts_are_equal(receipt1, receipt2):
         print("Total amount field doesn't match")
         return False
     
-    print("All basic fields match - receipts are equal")
+    print("Date and amount match - receipts are equal")
     return True
 
 def is_duplicate(new_receipt, receipts):
@@ -78,9 +72,6 @@ def is_duplicate(new_receipt, receipts):
     
     for i, old_receipt in enumerate(receipts):
         print(f"\nChecking against receipt {i}:")
-        print(f"  Stored: {old_receipt.get('merchant')} - {old_receipt.get('date')} - {old_receipt.get('total_amount')}")
-        print(f"  New: {new_receipt.get('merchant')} - {new_receipt.get('date')} - {new_receipt.get('total_amount')}")
-        
         if receipts_are_equal(old_receipt, new_receipt):
             print(f"DUPLICATE FOUND at index {i}!")
             return True
@@ -102,11 +93,13 @@ def process_receipt(new_receipt):
     
     if is_duplicate(new_receipt, receipts):
         print("SETTING FRAUD CHECK TO TRUE")
-        new_receipt['fraud_check'] = True
+        # Create FraudData object and convert to dict
+        fraud_data = FraudData(fraud_detected=True, fraud_type="duplicate")
+        new_receipt['fraud_check'] = [fraud_data.dict()]
         # Do not save, just return
     else:
         print("SETTING FRAUD CHECK TO FALSE - SAVING RECEIPT")
-        new_receipt['fraud_check'] = False
+        new_receipt['fraud_check'] = []  # Empty list means no fraud detected
         receipts.append(new_receipt)
         save_receipts(receipts)
     
