@@ -1,40 +1,40 @@
 import gradio as gr
-from pipeline import extract_info, extract_child_fee_info
-from pdf2image import convert_from_path
+from pipeline import extract_info_batch, extract_child_fee_info,extract_medical_info
+from PIL import Image
+
+
 
 
 
 with gr.Blocks() as demo:
     with gr.Tabs():
-        with gr.Tab("Single Upload"):
+        with gr.Tab("Receipts Upload"):
             with gr.Row():
                 with gr.Column(scale=2):
-                    img_input = gr.Image(type="pil",label="Image Upload",elem_id="upload-img",show_label=False,height=512,width=512)
+                    batch_img_input = gr.File(
+                        file_types=["image"],
+                        label="Batch Image Upload",
+                        elem_id="batch-upload-img",
+                        show_label=True,
+                        file_count="multiple"
+                    )
 
                 with gr.Column(scale=2):
-                    output_box = gr.Markdown(
-                        value="""```json
-                                    {
-                                    "merchant": "",
-                                    "date": "",
-                                    "total_amount": null,
-                                    "items": [
-                                        {
-                                            "description": "",
-                                            "amount": null
-                                        }
-                                    ]
-                                    }
-                                    ```""",
-
-                        label="Extracted Info", elem_id="output-box", show_label=False
+                    batch_output_box = gr.Markdown(
+                        value="Upload Images to extract information",
+                        label="Batch Extracted Info",
+                        elem_id="batch-output-box",
+                        show_label=True
                     )
-                    img_input.upload(fn=extract_info, inputs=img_input, outputs=output_box)
+                    batch_img_input.change(
+                        fn=extract_info_batch,
+                        inputs=batch_img_input,
+                        outputs=batch_output_box
+                    )
         
 
 
-
-        with gr.Tab("Reimbursement Form"):
+        with gr.Tab("Child Fee Reimbursement Form"):
             with gr.Row():
                 with gr.Column(scale=2):
                     img_input = gr.Image(
@@ -48,17 +48,12 @@ with gr.Blocks() as demo:
 
                 with gr.Column(scale=2):
                     # Dropdown for form names
-                    form_dropdown = gr.Dropdown(
-                        choices=["Child Fee Reimbursement", "Medical Reimbursement", "Other Form"],
-                        label="Select Form",
-                        value="Child Fee Reimbursement",
-                        multiselect=False,
-                        interactive=True,
-                    )
+                    gr.Markdown("## Child Fee Reimbursement")
                     
                     # 2x2 grid for info fields
                     with gr.Row():
                         emp_name = gr.Textbox(label="Employee Name")
+                
                         emp_code = gr.Textbox(label="Employee Code")
                     with gr.Row():
                         department = gr.Textbox(label="Department")
@@ -72,11 +67,45 @@ with gr.Blocks() as demo:
                         outputs=preview_output
                     )
 
+       
+        with gr.Tab("Medical Reimbursement Form"):
+            with gr.Row():
+                with gr.Column(scale=2):
+                    medical_img_input = gr.Image(
+                        type="pil",
+                        label="Image Upload",
+                        elem_id="upload-img",
+                        show_label=False,
+                        height=512,
+                        width=512
+                    )
+                with gr.Column(scale=2):
+                    with gr.Row():
+                        med_company_name = gr.Dropdown(choices=["NetSol Technologies Ltd.","NetSol Innovation Private Ltd."], interactive=True, multiselect=False)
+                        med_emp_name = gr.Textbox(label="Employee Name")
+                        med_department = gr.Textbox(label="Department")
+                    with gr.Row():
+                        med_designation = gr.Textbox(label="Designation")
+                        med_ext_code = gr.Textbox(label="Extention No.")
+                        med_emp_code = gr.Textbox(label="Employee Code")
+                    medical_upload_btn = gr.Button("Upload and Process")
+                    preview_medical_output = gr.File(label="Download Filled Form")
+
+                    
+                    medical_upload_btn.click(
+                        fn=extract_medical_info,
+                        inputs=[medical_img_input,med_emp_name,med_emp_code,med_department,med_designation,med_company_name,med_ext_code],
+                        outputs=preview_medical_output
+                    )
+
+
+
+
     # CSS:
     gr.HTML("""
         <style>
         #output-box .prose, #output-box .prose pre, #output-box .prose code {
-            font-size: 22px !important;
+            font-size: 30px !important;
         }
         </style>
     """)

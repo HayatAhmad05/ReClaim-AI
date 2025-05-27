@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Medical Reimbursement Form (Applicable for Outpatient)</title>
+    <style>
+        body {
+            font-family: 'Times New Roman', Times, serif;
+            background: #fff;
+            margin: 0;
+            padding: 40px 0;
+        }
+        .form-container {
+            width: 900px;
+            margin: 0 auto;
+            border: 2px solid #000;
+            background: #fff;
+        }
+        .form-header {
+            display: flex;
+            align-items: flex-start;
+            padding: 15px 30px 0 20px;
+        }
+        .logo-placeholder {
+            width: 90px;
+            height: 90px;
+            background: #f2f2f2;
+            border: 1px solid #ddd;
+            margin-right: 18px;
+        }
+        .header-title {
+            flex: 1;
+            text-align: center;
+        }
+        .header-title h2 {
+            font-size: 24px;
+            margin: 0;
+            font-weight: bold;
+        }
+        .header-title h3 {
+            font-size: 18px;
+            margin: 0;
+            font-weight: normal;
+        }
+        .form-details {
+            display: flex;
+            flex-wrap: wrap;
+            padding: 10px 30px 0 30px;
+            font-size: 17px;
+        }
+        .form-details-col {
+            flex: 1 1 50%;
+        }
+        .form-details-row {
+            display: flex;
+            align-items: center;
+            margin-bottom: 7px;
+        }
+        .form-details-label {
+            width: 140px;
+            display: inline-block;
+        }
+        .form-details-input {
+            border: none;
+            border-bottom: 1.2px solid #000;
+            width: 250px;
+            height: 22px;
+            font-size: 16px;
+            background: none;
+            margin-left: 4px;
+            margin-right: 4px;
+        }
+        .form-details-input:focus {
+            outline: none;
+            background: #eef;
+        }
+        .form-table-container {
+            margin: 25px 20px 0 20px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 0;
+        }
+        th, td {
+            border: 1px solid #000;
+            padding: 7px 4px;
+            font-size: 16px;
+            text-align: center;
+        }
+        th {
+            background: #ddd;
+            font-weight: bold;
+        }
+        .table-title-row th {
+            border-bottom: 2px solid #000;
+        }
+        .table-claim-col {
+            width: 120px;
+        }
+        .table-input {
+            width: 95%;
+            font-size: 15px;
+            border: none;
+            border-bottom: 1px solid #555;
+            background: none;
+            text-align: center;
+        }
+        .table-input:focus {
+            outline: none;
+            background: #eef;
+        }
+        .total-row td {
+            border: none;
+            text-align: right;
+            font-weight: bold;
+            font-size: 17px;
+            padding-right: 24px;
+        }
+        .signature-row {
+            height: 60px;
+        }
+        .signature-cell {
+            text-align: right;
+            padding-right: 90px;
+            vertical-align: bottom;
+        }
+        .notes-section {
+            font-size: 14px;
+            margin: 8px 22px 10px 24px;
+        }
+        .notes-section ol,
+        .notes-section ul {
+            margin-top: 0;
+            margin-bottom: 0;
+        }
+        .notes-section li {
+            margin-bottom: 4px;
+        }
+        .bottom-line {
+            border-bottom: 1.5px solid #000;
+            margin-top: 30px;
+            width: 250px;
+        }
+        @media (max-width: 950px) {
+            .form-container {
+                width: 98vw;
+            }
+        }
+        @media (max-width: 650px) {
+            .form-header, .form-details, .form-table-container {
+                padding-left: 5px !important;
+                padding-right: 5px !important;
+            }
+            .form-container {
+                padding: 0 1vw;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="form-container">
+        <div class="form-header">
+            <div class="logo-placeholder">
+                <!-- Logo goes here -->
+            </div>
+            <div class="header-title">
+                <h2>Medical Reimbursement Form</h2>
+                <h3>(Applicable for Outpatient )</h3>
+            </div>
+        </div>
+        <form>
+        <div class="form-details">
+            <div class="form-details-col">
+                <div class="form-details-row">
+                    <span class="form-details-label">Company:</span>
+                    <input class="form-details-input" type="text" name="company">
+                </div>
+                <div class="form-details-row">
+                    <span class="form-details-label">Name:</span>
+                    <input class="form-details-input" type="text" name="name">
+                </div>
+                <div class="form-details-row">
+                    <span class="form-details-label">Department:</span>
+                    <input class="form-details-input" type="text" name="department">
+                </div>
+                <div class="form-details-row">
+                    <span class="form-details-label">Designation:</span>
+                    <input class="form-details-input" type="text" name="designation">
+                </div>
+            </div>
+            <div class="form-details-col">
+                <div class="form-details-row">
+                    <span class="form-details-label">Extension No:</span>
+                    <input class="form-details-input" type="text" name="extension">
+                </div>
+                <div class="form-details-row">
+                    <span class="form-details-label">Employee Code:</span>
+                    <input class="form-details-input" type="text" name="employee_code">
+                </div>
+                <div class="form-details-row">
+                    <span class="form-details-label">Date:</span>
+                    <input class="form-details-input" type="date" name="date" style="width:180px;">
+                </div>
+                <div class="form-details-row">
+                    <span class="form-details-label">Billing Month:</span>
+                    <input class="form-details-input" type="text" name="billing_month" placeholder="mm/yy" style="width:90px;">
+                    <span style="margin-left:10px;">(mm/yy)</span>
+                </div>
+            </div>
+        </div>
+        <div class="form-table-container">
+            <table>
+                <tr class="table-title-row">
+                    <th>Name</th>
+                    <th>Relationship</th>
+                    <th>Category</th>
+                    <th class="table-claim-col">Detail</th>
+                    <th class="table-claim-col">Amount</th>
+                </tr>
+                <tbody>
+                    {{claims_rows}}
+                </tbody>
+            </table>
+            <table style="margin-top: 0;">
+                <tr class="total-row">
+                    <td colspan="4" style="border: none;"></td>
+                    <td style="border-top: none; border-left: 1px solid #000;">Total -
+                        <input style="width: 80px; border: none; border-bottom: 1px solid #000; font-size: 16px; background: none; text-align: center;" type="number" step="0.01" min="0" name="total" readonly id="total_amount">
+                    </td>
+                </tr>
+                <tr class="signature-row">
+                    <td colspan="5" class="signature-cell">
+                        <div style="margin-top:20px;">
+                            ________________________________<br>
+                            Employee's Signature
+                        </div>
+                    </td>
+                </tr>
+            </table>
+        </div>
+        </form>
+        <div class="notes-section">
+            <ol>
+                <li>No claim will be processed in case:
+                    <ul style="list-style-type: lower-alpha; margin-left: 20px;">
+                        <li>Supporting documents are not attached.</li>
+                        <li>Form is incomplete.</li>
+                        <li>Claim is time barred <span style="text-decoration:underline;">i.e.</span> not submitted within thirty (30) days after the expense is incurred.</li>
+                        <li>Any violation of applicable policy and procedure.</li>
+                    </ul>
+                </li>
+                <li>
+                    <span style="text-decoration:underline;">"Category"</span> refers to type of the claim <span style="text-decoration:underline;">i.e.</span> in-patient, out-patient, maternity (cesarean), maternity (normal).
+                </li>
+                <li>
+                    <span style="text-decoration:underline;">"Detail"</span> refers to type of the expenditure <span style="text-decoration:underline;">i.e.</span> doctor's fee, diagnostic tests, medicines, other hospitalization charges.
+                </li>
+                <li>
+                    Expenses incurred during probation are considered to be time barred if not claimed within thirty days after confirmation.
+                </li>
+            </ol>
+        </div>
+    </div>
+    <script>
+        // Auto sum the Amount columns
+        const amountFields = [
+            document.querySelector('input[name="claim_amount1"]'),
+            document.querySelector('input[name="claim_amount2"]'),
+            document.querySelector('input[name="claim_amount3"]'),
+            document.querySelector('input[name="claim_amount4"]')
+        ];
+        const totalField = document.getElementById('total_amount');
+        amountFields.forEach(f => {
+            f.addEventListener('input', () => {
+                let total = 0;
+                amountFields.forEach(ff => {
+                    let val = parseFloat(ff.value);
+                    if (!isNaN(val)) total += val;
+                });
+                totalField.value = total > 0 ? total.toFixed(2) : '';
+            });
+        });
+    </script>
+</body>
+</html>

@@ -27,3 +27,25 @@ class FeeItem(BaseModel):
 class ChildFeeForm(BaseModel):
     items: List[FeeItem]
     total: float  # Calculated after parsing
+
+
+
+
+class MedicalClaimItem(BaseModel):
+    name: str  # Patient name
+    relationship: str  # self, spouse, parent, child
+    category: str  # in-patient, out-patient, maternity(cesarean), maternity(normal)
+    detail: str  # doctor's fee, diagnostic tests, medicines, other hospitalization
+    amount: float
+
+class MedicalReimbursementForm(BaseModel):
+    company: Optional[str] = None
+    extension_no: Optional[str] = None
+    employee_name: str
+    employee_code: str
+    department: Optional[str] = None
+    designation: Optional[str] = None
+    date: Optional[str] = None
+    billing_month: Optional[str] = None
+    claims: List[MedicalClaimItem]
+    total: float
