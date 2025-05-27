@@ -5,7 +5,7 @@ import os, uuid
 from PIL import Image
 import base64
 import json
-from models import ReceiptData, ChildFeeForm, MedicalReimbursementForm
+from models import ReceiptData, ChildFeeForm
 from form_fill import fill_child_fee_pdf, fill_medical_pdf
 from fraud import process_receipt
 from datetime import datetime
